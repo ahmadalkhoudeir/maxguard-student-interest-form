@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Max-Guard — Student Team Application</title>
+<meta name="description" content="Apply to join the Max-Guard student team at Central Connecticut State University.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #14202E;
+    --ink-soft: #4A5866;
+    --paper: #F4F6F8;
+    --card: #FFFFFF;
+    --rule: #D5DBE1;
+    --blue: #0B3C7D;
+    --signal: #B3671A;
+    --ok: #1F6B47;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .shell { max-width: 660px; margin: 0 auto; padding: 0 20px 72px; }
+
+  /* ---- Header ---- */
+  header.masthead {
+    background: var(--ink);
+    color: #fff;
+    padding: 44px 0 38px;
+    margin-bottom: 34px;
+  }
+  .masthead .shell { padding-bottom: 0; }
+  .masthead h1 {
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 14px;
+  }
+  .masthead p {
+    margin: 0;
+    max-width: 52ch;
+    color: #B9C6D4;
+    font-size: 16px;
+  }
+  .masthead .org {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: #7E93A8;
+    font-weight: 500;
+  }
+
+  /* ---- Intro ---- */
+  .intro {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--blue);
+    padding: 22px 24px;
+    margin-bottom: 32px;
+  }
+  .intro p { margin: 0 0 12px; color: var(--ink-soft); }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- Sections ---- */
+  fieldset {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 0 0 34px;
+    padding: 26px 0 0;
+  }
+  legend {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding: 0;
+    margin-bottom: 4px;
+  }
+  .legend-note {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    margin: 0 0 22px;
+  }
+
+  .field { margin-bottom: 22px; }
+  .field:last-child { margin-bottom: 0; }
+
+  label.q {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 7px;
+  }
+  .hint {
+    display: block;
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  .req { color: var(--signal); font-weight: 600; }
+
+  input[type="text"], input[type="email"], select, textarea {
+    width: 100%;
+    padding: 11px 13px;
+    font: inherit;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  textarea { min-height: 92px; resize: vertical; }
+
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  .choices { display: grid; gap: 9px; }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 11px 13px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .choice:hover { border-color: #A9B4C0; }
+  .choice input { margin: 4px 0 0; flex: none; accent-color: var(--blue); }
+  .choice span { font-size: 15.5px; }
+  .choice .sub { display: block; color: var(--ink-soft); font-size: 14px; }
+
+  /* ---- Submit ---- */
+  .actions { border-top: 1px solid var(--rule); padding-top: 26px; }
+  button.send {
+    background: var(--blue);
+    color: #fff;
+    border: 0;
+    border-radius: 3px;
+    padding: 14px 30px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.send:hover { background: #0A3468; }
+  button.send:disabled { background: #8A97A6; cursor: default; }
+
+  .status { margin-top: 14px; font-size: 15px; min-height: 22px; }
+  .status.err { color: #A32B1E; }
+  .status.ok { color: var(--ok); }
+
+  /* ---- Confirmation ---- */
+  .done {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--ok);
+    padding: 30px 26px;
+  }
+  .done h2 { margin: 0 0 10px; font-size: 22px; font-weight: 600; }
+  .done p { margin: 0 0 12px; color: var(--ink-soft); }
+  .done p:last-child { margin-bottom: 0; }
+
+  [hidden] { display: none !important; }
+
+  /* ---- Footer note ---- */
+  .owner {
+    margin-top: 46px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="shell">
+    <p class="org">Central Connecticut State University</p>
+    <h1>Max-Guard: student team application</h1>
+    <p>We're rebuilding a network security scanner so it runs entirely offline and speaks the compliance languages government agencies actually use.</p>
+  </div>
+</header>
+
+<div class="shell">
+
+  <div class="intro" id="intro">
+    <p><strong>You do not need prior experience.</strong> Several roles on this team are a good fit for someone who has finished one programming course and is willing to learn the rest.</p>
+    <p>This form takes about three minutes. It helps us match you to the part of the project you'd actually enjoy.</p>
+  </div>
+
+  <form id="app">
+
+    <fieldset>
+      <legend>About you</legend>
+      <p class="legend-note">So we can get back to you.</p>
+
+      <div class="field">
+        <label class="q" for="name">Full name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" autocomplete="name" required>
+      </div>
+
+      <div class="field">
+        <label class="q" for="email">CCSU email <span class="req">*</span>
+          <span class="hint">Use your university address if you have one.</span>
+        </label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label class="q" for="major">Major or program <span class="req">*</span></label>
+        <input type="text" id="major" name="major" placeholder="e.g. Cybersecurity, Computer Science, Management Information Systems" required>
+      </div>
+
+      <div class="field">
+        <label class="q" for="year">Year <span class="req">*</span></label>
+        <select id="year" name="year" required>
+          <option value="">Choose one</option>
+          <option>First year</option>
+          <option>Sophomore</option>
+          <option>Junior</option>
+          <option>Senior</option>
+          <option>Graduate student</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What you'd want to work on</legend>
+      <p class="legend-note">Pick as many as genuinely interest you. Nobody does all of these.</p>
+
+      <div class="choices" id="areas">
+        <label class="choice"><input type="checkbox" name="areas" value="Packet capture and network analysis"><span>Packet capture and network analysis<span class="sub">Reading live traffic, figuring out what a connection is actually doing</span></span></label>
+        <label class="choice"><input type="checkbox" name="areas" value="Running AI models locally"><span>Running AI models locally<span class="sub">Getting a language model working on a machine with no internet access</span></span></label>
+        <label class="choice"><input type="checkbox" name="areas" value="Compliance and control mapping"><span>Compliance and control mapping<span class="sub">Translating findings into NIST 800-53, CISA, and CJIS requirements</span></span></label>
+        <label class="choice"><input type="checkbox" name="areas" value="Python development"><span>Python development<span class="sub">Building the detection engine and the pieces around it</span></span></label>
+        <label class="choice"><input type="checkbox" name="areas" value="Testing and quality"><span>Testing and quality<span class="sub">Making sure the tool gives the same answer every time it runs</span></span></label>
+        <label class="choice"><input type="checkbox" name="areas" value="Writing and reporting"><span>Writing and reporting<span class="sub">Documentation, and the report a non-technical manager has to read</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Where you're starting from</legend>
+      <p class="legend-note">Answer honestly. We are not filtering people out for saying "none."</p>
+
+      <div class="field">
+        <label class="q" for="python">Python <span class="req">*</span></label>
+        <select id="python" name="python" required>
+          <option value="">Choose one</option>
+          <option>None yet</option>
+          <option>One course, still shaky</option>
+          <option>Comfortable with the basics</option>
+          <option>I write Python regularly</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="q" for="linux">Linux or the command line <span class="req">*</span></label>
+        <select id="linux" name="linux" required>
+          <option value="">Choose one</option>
+          <option>Never used it</option>
+          <option>A little, in class</option>
+          <option>I can find my way around</option>
+          <option>I use it daily</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="q" for="hours">Hours per week you can commit <span class="req">*</span>
+          <span class="hint">Underestimating here is better than overestimating.</span>
+        </label>
+        <select id="hours" name="hours" required>
+          <option value="">Choose one</option>
+          <option>2–4 hours</option>
+          <option>5–8 hours</option>
+          <option>9 or more hours</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="q" for="built">Anything you've built or worked on
+          <span class="hint">Class projects count. Leave blank if there's nothing yet.</span>
+        </label>
+        <textarea id="built" name="built"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q" for="why">Why do you want to work on this? <span class="req">*</span>
+          <span class="hint">Two or three sentences is plenty.</span>
+        </label>
+        <textarea id="why" name="why" required></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q" for="links">GitHub or LinkedIn
+          <span class="hint">Optional.</span>
+        </label>
+        <input type="text" id="links" name="links" placeholder="Paste a link, or leave blank">
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" class="send" id="sendBtn">Send application</button>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </div>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <h2>Application received</h2>
+    <p>Thanks — we've got it. We read every one of these.</p>
+    <p>Expect a reply within about a week. If you don't hear anything by then, message me directly on LinkedIn rather than assuming it's a no; things get lost.</p>
+  </div>
+
+  <p class="owner">
+    Questions before you apply? Message Ahmad Alkhoudeir on LinkedIn.
+  </p>
+
+</div>
+
+<script>
+  // ─────────────────────────────────────────────────────────────
+  //  SETUP — replace the ID below with your own Formspree form ID.
+  //  Sign up free at https://formspree.io, create a form, and copy
+  //  the 8-character code from the endpoint it gives you.
+  //  Example endpoint: https://formspree.io/f/xyzabcde  →  'xyzabcde'
+  // ─────────────────────────────────────────────────────────────
+  const FORMSPREE_ID = 'xeaqppnz';
+
+  const ENDPOINT = 'https://formspree.io/f/' + FORMSPREE_ID;
+
+  const form = document.getElementById('app');
+  const statusEl = document.getElementById('status');
+  const sendBtn = document.getElementById('sendBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const areas = data.getAll('areas');
+
+    const payload = {
+      name: data.get('name').trim(),
+      email: data.get('email').trim(),
+      major: data.get('major').trim(),
+      year: data.get('year'),
+      interests: areas.length ? areas.join(', ') : 'None selected',
+      python: data.get('python'),
+      linux: data.get('linux'),
+      hours_per_week: data.get('hours'),
+      previous_work: (data.get('built') || '').trim() || '—',
+      motivation: (data.get('why') || '').trim(),
+      links: (data.get('links') || '').trim() || '—',
+      _subject: 'Max-Guard application — ' + data.get('name').trim()
+    };
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending';
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Request failed with status ' + res.status);
+
+      document.getElementById('intro').hidden = true;
+      form.hidden = true;
+      document.getElementById('done').hidden = false;
+      window.scrollTo({ top: 0 });
+    } catch (err) {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send application';
+      statusEl.className = 'status err';
+      statusEl.innerHTML = 'That did not go through. Check your connection and try again, or email your answers to <a href="mailto:a.alkhoudeir@my.ccsu.edu">a.alkhoudeir@my.ccsu.edu</a>.';
+    }
+  });
+</script>
+</body>
+</html>
